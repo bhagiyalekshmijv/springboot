@@ -1,0 +1,15 @@
+body {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	text-align: center;
+	background-color: lavenderblush;
+}
+
+.container {
+	margin-top: 50px;
+}
+
+button {
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+}
