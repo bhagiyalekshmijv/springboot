@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Welcome Page</h1>
+    		
+    <div th:utext="${headind}"></div>
+    <h1 th:text="${message}"></h1>
+    <div th:if="${isLoggedIn}">
+        <h3>Welcome back, student!</h3>
+    </div>
+    <div th:if="${!isLoggedIn}">
+        <h3>Please log in to access the lessons</h3>
+    </div>
+</body>
+</html>
