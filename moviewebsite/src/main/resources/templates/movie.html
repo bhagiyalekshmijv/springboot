@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movie Page</title>
+</head>
+<body>
+    		
+    <div th:utext="${title}"></div>
+	
+    <p th:text="${preview}"></p>
+	
+    <div th:if="${isLoggedIn}">
+        <p>A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idae into the mind of a CEO.</p>
+    </div>
+    <div th:if="${!isLoggedIn}">
+        <p>Please log in to read the full movie description.</p>
+    </div>
+</body>
+</html>
