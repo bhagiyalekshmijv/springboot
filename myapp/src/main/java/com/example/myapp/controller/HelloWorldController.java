@@ -21,4 +21,9 @@ public class HelloWorldController {
         model.addAttribute("isLoggedIn", isLoggedIn);
         return "hello";
     }
+    
+    @GetMapping("/partials")
+    public String aboutus() {
+        return "index";
+    }    
 }
