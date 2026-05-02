@@ -1,10 +1,23 @@
-<html>
-  <body>
-    <h1>Product Details:</h1>
-    <ul>
-      <li>ID: <span th:text="${product.id}"></span></li>
-      <li>Name: <span th:text="${product.name}"></span></li>
-      <li>Price:<span th:text="${product.price}"></span></li>
-    </ul>
-  </body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring Insertion Example</title>
+</head>
+<body>
+    <h2 th:if="${message}" th:text=${message}></h2><br>
+    <form th:action="@{/save-product}" method="post">
+        <div>
+            <label> Name : <input type="text" name="name" /></label>
+        </div><br>
+        <div>
+            <label> Description : <textarea type="description" name="description" ></textarea></label>
+        </div><br>
+        <div>
+            <label> price: <input type="number" name="price" /></label>
+        </div><br>
+        <div>
+            <input type="submit" value="submit" />
+        </div>
+    </form>
+</body>
 </html>

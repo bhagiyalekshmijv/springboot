@@ -1,28 +1,40 @@
 package com.example.myapp.controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.example.myapp.models.Product;
-import java.util.List;
-import java.util.ArrayList;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import com.example.myapp.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import com.example.myapp.models.ProductModel; 
 @Controller
 public class ProductController {
 
-    @GetMapping("/product")
-    public String getProduct(Model model) {
-        Product product = new Product(1,"Biscuit",(float) 45.3);
-        model.addAttribute("product", product);
-        return "product";
-    }
+	@GetMapping("/product")
+	public String Product(Model model) {
+	    model.addAttribute("message", "Enter Your product Details");
+	    return "product";
+	}
+	@Autowired
+	private ProductRepository productRepository;
+	@PostMapping("/save-product")
+	public String Product(ProductModel productData,Model model) {
+	    
+	    ProductModel n = new ProductModel();
+	    n.setName(productData.getName());
+	    n.setDescription(productData.getDescription());    
+	    n.setPrice(productData.getPrice()); 
+	    productRepository.save(n);
+	    
+	    model.addAttribute("message", "The product " + productData.getName() +" is saved successfully");
+	    return "product"; 
+	} 
+	
+	@GetMapping("/products")
+	public String showProducts(Model model) {
+		 Iterable<ProductModel> productList = productRepository.findAll();
+	    model.addAttribute("products", productList);
+	    return "products";
+	}
 
-    @GetMapping("/products")
-    public String getProducts(Model model) {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product(1, "Biscuit",(float) 36.7));
-        products.add(new Product(2, "Chocolate",(float) 67.78));
-        products.add(new Product(3, "Chips",(float) 90.89));
-        model.addAttribute("products", products);
-        return "products";
-    }
 }
+
