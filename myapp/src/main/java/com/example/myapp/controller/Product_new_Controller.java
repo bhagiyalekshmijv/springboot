@@ -29,4 +29,5 @@ public class Product_new_Controller {
         model.addAttribute("message", "The product " + product.getName() +" is saved successfully");
         return "product_new"; 
     }
+    
 }
