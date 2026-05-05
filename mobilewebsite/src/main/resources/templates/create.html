@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mobile Shop</title>
+</head>
+<body>
+  <h1>Add Product</h1>
+  <p th:text="${message}"></p>
+  <form action="#" th:action="@{/create}" method="post">
+    <label>Name:</label>
+    <input type="text" name="name" required /><br/><br/>
+    <label>Description:</label>
+    <input type="text" name="description" required /><br/><br/>
+    <label>Price:</label>
+    <input type="text" name="price" required /><br/><br/>
+    <button type="submit">Add</button>
+  </form>
+</body>
+</html>
