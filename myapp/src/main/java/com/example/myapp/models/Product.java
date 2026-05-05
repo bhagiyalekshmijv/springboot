@@ -1,21 +1,35 @@
 package com.example.myapp.models;
 
-public class Product {
-    private int id;
-    private String name;
-    private double price;
-    
-    public Product(int id,String name,double price) {
-        this .id=id;
-        this.name=name;
-        this.price=price;
-    }
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-    public int getId() {
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(length = 100)
+    private String name;
+
+    @Column(length = 255)
+    private String description;
+
+    @Column(length = 10) // Adjust based on your date format
+    private String expirydate;
+
+    @Column(length = 10)
+    private String price;
+
+    // Getters and Setters
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -26,10 +40,28 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-    public double getPrice() {
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getExpirydate() {
+        return expirydate;
+    }
+
+    public void setExpirydate(String expirydate) {
+        this.expirydate = expirydate;
+    }
+
+    public String getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+
+    public void setPrice(String price) {
         this.price = price;
     }
 }

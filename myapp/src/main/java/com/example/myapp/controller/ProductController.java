@@ -1,61 +1,85 @@
 package com.example.myapp.controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import com.example.myapp.repository.ProductRepository;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import com.example.myapp.models.ProductModel;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.data.repository.query.Param;
 import com.example.myapp.models.Product;
+import com.example.myapp.repository.ProductRepository;
+
 @Controller
 public class ProductController {
 
-	@GetMapping("/product")
-	public String Product(Model model) {
-	    model.addAttribute("message", "Enter Your product Details");
-	    return "product";
-	}
-	@Autowired
-	private ProductRepository productRepository;
-	@PostMapping("/save-product")
-	public String Product(ProductModel productData,Model model) {
-	    
-	    ProductModel n = new ProductModel();
-	    n.setName(productData.getName());
-	    n.setDescription(productData.getDescription());    
-	    n.setPrice(productData.getPrice()); 
-	    productRepository.save(n);
-	    
-	    model.addAttribute("message", "The product " + productData.getName() +" is saved successfully");
-	    return "product"; 
-	} 
-	
-	@GetMapping("/products")
-	public String showProducts(Model model) {
-		 Iterable<ProductModel> productList = productRepository.findAll();
-	    model.addAttribute("products", productList);
-	    return "products";
-	}
-	
-	@GetMapping("/productname")
-	public String productdetails(Model model) {
-	    List<Object[]> namesAndPricesList = productRepository.findNamesAndPrices();
-	    model.addAttribute("namesAndPrices", namesAndPricesList);
-	    return "product-name";
-	}
-	
-	@GetMapping("/products/{name}/{price}")
-	public String getProductDetails(@PathVariable String name, @PathVariable Float price, Model model) {
-	   Product product= new Product(0, name, price);
-	   product.setName(name);
-	   product.setPrice(price);
-	   model.addAttribute("product", product);
-	   return "product-details";
-	}
+    @Autowired
+    private ProductRepository productRepository;
 
+    @GetMapping("/create")
+    public String createAction(Model model) {
+        model.addAttribute("message", "Enter The Product Details");
+        return "create";
+    }
+
+    @PostMapping("/create")
+    public String createActionProcess(Product productData, Model model) {
+        productRepository.save(productData);
+        model.addAttribute("message", "The Product " + productData.getName() + " has been created successfully");
+        return "create";
+    }
+    
+    @GetMapping("/all")
+    public String getAllProducts(Model model, @Param("keyword") String keyword) {
+        List<Product> products;
+        if (keyword != null && !keyword.isEmpty()) {
+            products = productRepository.findAllByKeyword(keyword);
+        } else {
+            products = productRepository.findAll();
+        }
+        model.addAttribute("products", products);
+        return "list";
+    }
+    
+    @GetMapping("/update/{id}")
+    public String updateProduct(@PathVariable Integer id, Model model) {
+        Optional<Product> optionalProductDetails = productRepository.findById(id);
+        if (optionalProductDetails.isPresent()) {
+            model.addAttribute("productDetails", optionalProductDetails.get());
+            return "update";
+        }
+        return "redirect:/all"; // Handle not found case
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable Integer id, Product productData) {
+        Optional<Product> optionalProductDetails = productRepository.findById(id);
+        if (optionalProductDetails.isPresent()) {
+            Product productDetails = optionalProductDetails.get();
+            productDetails.setName(productData.getName());
+            productDetails.setDescription(productData.getDescription());
+            productDetails.setExpirydate(productData.getExpirydate());
+             productDetails.setPrice(productData.getPrice());
+            productRepository.save(productDetails);
+        }
+        return "redirect:/all";
+    }
+    
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Integer id, Model model) {
+        Optional<Product> optionalProductDetails = productRepository.findById(id);
+        if (optionalProductDetails.isPresent()) {
+            model.addAttribute("productDetails", optionalProductDetails.get());
+            return "delete";
+        }
+        return "redirect:/all"; // Handle not found case
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Integer id) {
+        productRepository.deleteById(id);
+        return "redirect:/all";
+    }
 }
-
