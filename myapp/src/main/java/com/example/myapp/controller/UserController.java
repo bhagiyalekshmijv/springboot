@@ -27,4 +27,9 @@ public class UserController {
         model.addAttribute("message", "Registered Successfuly!");
         return "register";
     }
+    
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
